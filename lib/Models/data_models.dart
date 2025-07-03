@@ -1,0 +1,34 @@
+class HashTag {
+  String title;
+
+  HashTag({required this.title});
+}
+
+class BlogModel {
+  int id;
+  String imageUrl;
+  String title;
+  String writer;
+  String writerImageUrl;
+  String date;
+  String content;
+  String views;
+
+  BlogModel({
+    required this.id,
+    required this.imageUrl,
+    required this.title,
+    required this.writer,
+    required this.writerImageUrl,
+    required this.date,
+    required this.content,
+    required this.views,
+  });
+}
+
+class PadcastModel {
+  String imgUrl;
+  String title;
+
+  PadcastModel({required this.imgUrl, required this.title});
+}
