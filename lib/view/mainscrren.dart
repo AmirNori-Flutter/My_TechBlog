@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:techblog/Constants/my_colors.dart';
 import 'package:techblog/gen/assets.gen.dart';
+import 'package:techblog/view/home_scrren.dart';
 import 'package:techblog/view/profile_scrren.dart';
 
-class Mainscrren extends StatelessWidget {
+class Mainscrren extends StatefulWidget {
   const Mainscrren({super.key});
+
+  @override
+  State<Mainscrren> createState() => _MainscrrenState();
+}
+
+class _MainscrrenState extends State<Mainscrren> {
+  var selectedPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +40,35 @@ class Mainscrren extends StatelessWidget {
         ),
         body: Stack(
           children: [
-            Positioned.fill(
-              child: ProfileScrren(
-                size: size,
-                text_theme: text_theme,
-                bodyMargin: bodyMargin,
+            Center(
+              child: Positioned.fill(
+                child: IndexedStack(
+                  index: selectedPageIndex,
+                  children: [
+                    homeScrren(
+                      size: size,
+                      text_theme: text_theme,
+                      bodyMargin: bodyMargin,
+                    ),
+                    ProfileScrren(
+                      size: size,
+                      text_theme: text_theme,
+                      bodyMargin: bodyMargin,
+                    ),
+                  ],
+                ),
               ),
             ),
 
-            BottomNav(size: size, bodyMargin: bodyMargin),
+            BottomNav(
+              size: size,
+              bodyMargin: bodyMargin,
+              changePage: (int value) {
+                setState(() {
+                  selectedPageIndex = value;
+                });
+              },
+            ),
           ],
         ),
       ),
@@ -53,10 +81,12 @@ class BottomNav extends StatelessWidget {
     super.key,
     required this.size,
     required this.bodyMargin,
+    required this.changePage,
   });
 
   final Size size;
   final double bodyMargin;
+  final Function(int) changePage;
 
   @override
   Widget build(BuildContext context) {
@@ -79,15 +109,15 @@ class BottomNav extends StatelessWidget {
             height: size.height / 8,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(18)),
-              gradient: LinearGradient(
-                colors: GradientColors.bottomNav,
-              ),
+              gradient: LinearGradient(colors: GradientColors.bottomNav),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    changePage(0);
+                  },
                   icon: ImageIcon(
                     Assets.icons.home.provider(),
                     color: Colors.white,
@@ -101,7 +131,9 @@ class BottomNav extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    changePage(1);
+                  },
                   icon: ImageIcon(
                     Assets.icons.user.provider(),
                     color: Colors.white,
